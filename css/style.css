@@ -59,14 +59,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   z-index: 10;
 }
 .home__bg {
-  position: fixed; inset: 0;
+  position: fixed; inset: 0; pointer-events: none;
   background:
     radial-gradient(70% 55% at 82% -8%, rgba(25, 179, 198, 0.28), transparent 55%),
     radial-gradient(60% 50% at 8% 2%, rgba(139, 92, 246, 0.22), transparent 52%),
     linear-gradient(180deg, #0a3346 0%, #082a3b 46%, #05202b 100%);
 }
 .home__overlay {
-  position: fixed; inset: 0;
+  position: fixed; inset: 0; pointer-events: none;
   /* léger grain lumineux + fondu bas pour la lisibilité */
   background:
     radial-gradient(120% 80% at 50% 120%, rgba(4, 26, 36, 0.55), transparent 60%);
@@ -98,6 +98,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .brand__text em {
   font-family: var(--font-display); font-style: italic;
   font-size: 15px; opacity: 0.9; margin-top: 2px;
+}
+.brand__logo {
+  height: clamp(44px, 6vw, 60px); width: auto; display: block;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.35));
 }
 
 .home__progress { position: relative; width: 52px; height: 52px; }
@@ -259,6 +263,63 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .home__sec-sub {
   font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 2px;
+}
+
+/* =========================================================
+   RÉCOMPENSES PARTENAIRES
+========================================================= */
+.home__rewards {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+}
+.reward {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+}
+.reward.is-unlocked {
+  background: linear-gradient(150deg, rgba(139, 92, 246, 0.22), rgba(25, 179, 198, 0.16));
+  border-color: rgba(196, 181, 253, 0.45);
+  box-shadow: 0 12px 30px rgba(109, 40, 217, 0.22);
+}
+.reward.is-unlocked:hover { transform: translateY(-4px); }
+.reward__icon {
+  flex: none;
+  width: 54px; height: 54px; border-radius: 14px;
+  display: grid; place-items: center; font-size: 26px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  filter: grayscale(.85) opacity(.55);
+  transition: filter .25s, background .25s;
+}
+.reward.is-unlocked .reward__icon {
+  filter: none;
+  background: rgba(255, 255, 255, 0.16);
+}
+.reward__body { min-width: 0; }
+.reward__title {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 17px; color: #fff; line-height: 1.1;
+}
+.reward__desc {
+  font-size: 12.5px; line-height: 1.4; margin-top: 3px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.reward__status { margin-top: 9px; }
+.reward__badge {
+  display: inline-block;
+  font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase;
+  color: #04303a; background: var(--turquoise);
+  padding: 4px 11px; border-radius: 999px;
+}
+.reward__lock {
+  font-size: 12px; font-weight: 700; color: var(--violet-glow);
 }
 
 /* =========================================================
@@ -447,6 +508,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .tour__brand { color: #fff; text-align: center; display: flex; flex-direction: column; line-height: 1.05; }
 .tour__brand strong { letter-spacing: 2px; font-size: 15px; }
 .tour__brand em { font-family: var(--font-display); font-style: italic; font-size: 13px; opacity: .85; }
+.tour__logo { height: 38px; width: auto; display: block; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4)); }
 
 .btn-ghost {
   display: flex; align-items: center; gap: 6px;
@@ -809,7 +871,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* =========================================================
    QUIZ
 ========================================================= */
-.quiz {
+.quizbox {
   position: fixed; inset: 0; z-index: 41;
   display: grid; place-items: center;
   background: rgba(4, 22, 31, 0.55);

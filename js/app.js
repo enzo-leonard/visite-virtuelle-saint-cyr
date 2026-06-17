@@ -66,7 +66,34 @@ function renderDeck() {
     deckEl.appendChild(card);
   });
   renderMap();
+  renderRewards();
   updateProgressRing();
+}
+
+/* ---- récompenses partenaires (débloquées selon les secrets) ---- */
+function renderRewards() {
+  const deck = $("#rewardDeck");
+  if (!deck) return;
+  const rewards = window.REWARDS || [];
+  deck.innerHTML = "";
+  rewards.forEach((r) => {
+    const unlocked = found.size >= r.need;
+    const remaining = Math.max(0, r.need - found.size);
+    const card = document.createElement("article");
+    card.className = "reward" + (unlocked ? " is-unlocked" : "");
+    card.innerHTML = `
+      <div class="reward__icon">${r.icon}</div>
+      <div class="reward__body">
+        <div class="reward__title">${r.title}</div>
+        <div class="reward__desc">${r.desc}</div>
+        <div class="reward__status">${
+          unlocked
+            ? '<span class="reward__badge">✓ Débloqué</span>'
+            : `<span class="reward__lock">🔒 Encore ${remaining} secret${remaining > 1 ? "s" : ""}</span>`
+        }</div>
+      </div>`;
+    deck.appendChild(card);
+  });
 }
 
 /* ---- carte touristique gamifiée ---- */
@@ -391,8 +418,11 @@ function registerFound(sec, marker) {
   paintRail();
   renderRiddles(currentScene);
 
+  const reward = (window.REWARDS || []).find((r) => r.need === found.size);
   const fc = sceneFoundCount(currentScene);
-  if (fc === currentScene.secrets.length) {
+  if (reward) {
+    toast(`🎁 Récompense débloquée : ${reward.title} !`);
+  } else if (fc === currentScene.secrets.length) {
     toast(`✨ Bravo ! « ${currentScene.name} » : tous les secrets trouvés !`);
   } else {
     toast(`◆ Secret ${found.size}/${totalSecrets} découvert !`);

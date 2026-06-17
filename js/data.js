@@ -256,5 +256,25 @@ const TOUR = {
   ],
 };
 
+// ============================================================
+//  RÉCOMPENSES — débloquées selon le nombre de secrets trouvés
+//  (total de secrets dans la visite = 18)
+// ============================================================
+const REWARDS = [
+  { id: "bateau",  icon: "🚤", title: "Sortie en bateau",      need: 3,
+    desc: "Une balade commentée dans la baie des Lecques." },
+  { id: "hotel",   icon: "🏨", title: "-20 % à l'hôtel",        need: 6,
+    desc: "Sur une nuit dans un hôtel partenaire du front de mer." },
+  { id: "bowling", icon: "🎳", title: "Partie de bowling",      need: 9,
+    desc: "Une partie offerte pour toute la famille." },
+  { id: "vin",     icon: "🍷", title: "Dégustation Bandol",     need: 12,
+    desc: "Dégustation de vins AOC pour deux personnes." },
+  { id: "glace",   icon: "🍦", title: "Glace artisanale",       need: 15,
+    desc: "Une glace offerte sur la promenade des Lecques." },
+  { id: "trophee", icon: "🏆", title: "Trophée d'explorateur",  need: 18,
+    desc: "Le badge ultime + un cadeau souvenir surprise." },
+];
+
 // Exposé en global pour le module app.js
 window.TOUR = TOUR;
+window.REWARDS = REWARDS;

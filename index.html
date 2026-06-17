@@ -24,11 +24,7 @@
     <div class="home__inner">
     <header class="home__topbar">
       <div class="brand">
-        <span class="brand__mark">⚓</span>
-        <span class="brand__text">
-          <strong>SAINT-CYR-SUR-MER</strong>
-          <em>Méditerranée</em>
-        </span>
+        <img class="brand__logo" src="assets/logo_saint-cyr.png" alt="Saint-Cyr-sur-Mer · La Provence, les pieds dans l'eau" />
       </div>
       <div class="home__progress" id="homeProgress" aria-label="Progression">
         <svg viewBox="0 0 36 36" class="ring">
@@ -83,6 +79,18 @@
       <div class="home__deck" id="sceneDeck"><!-- cartes injectées en JS --></div>
     </section>
 
+    <!-- SECTION 3 : récompenses -->
+    <section class="home__block">
+      <div class="home__sec">
+        <span class="home__sec-num">3</span>
+        <div class="home__sec-txt">
+          <h2 class="home__sec-title">Récompenses à débloquer</h2>
+          <p class="home__sec-sub">Trouve des secrets pour gagner des avantages chez nos partenaires.</p>
+        </div>
+      </div>
+      <div class="home__rewards" id="rewardDeck"><!-- injecté en JS --></div>
+    </section>
+
     <footer class="home__foot">
       <span>Astuce : faites glisser pour regarder autour de vous · molette pour zoomer</span>
     </footer>
@@ -110,7 +118,7 @@
         <span class="i">‹</span> Carte
       </button>
       <div class="tour__brand">
-        <strong>SAINT-CYR-SUR-MER</strong><em>Méditerranée</em>
+        <img class="tour__logo" src="assets/logo_saint-cyr.png" alt="Saint-Cyr-sur-Mer" />
       </div>
       <div class="tour__tools">
         <button class="chip-btn is-active" id="riddleBtn" title="Afficher / masquer les énigmes">
@@ -163,7 +171,7 @@
   </div>
 
   <!-- ============== QUIZ ============== -->
-  <div class="quiz" id="quiz" hidden>
+  <div class="quizbox" id="quiz" hidden>
     <div class="quiz__card" id="quizCard">
       <button class="quiz__close" id="quizClose">×</button>
       <span class="quiz__badge">🧠 Quiz</span>
