@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Saint-Cyr-sur-Mer · Visite virtuelle 360°</title>
+  <meta name="description" content="Explorez Saint-Cyr-sur-Mer en 360° et partez à la chasse aux secrets cachés." />
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.7.3/index.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.7.3/index.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============== ÉCRAN D'ACCUEIL ============== -->
+  <section id="home" class="home">
+    <div class="home__bg"></div>
+    <div class="home__overlay"></div>
+
+    <header class="home__topbar">
+      <div class="brand">
+        <span class="brand__mark">⚓</span>
+        <span class="brand__text">
+          <strong>SAINT-CYR-SUR-MER</strong>
+          <em>Méditerranée</em>
+        </span>
+      </div>
+      <div class="home__progress" id="homeProgress" aria-label="Progression">
+        <svg viewBox="0 0 36 36" class="ring">
+          <path class="ring__bg" d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31" />
+          <path class="ring__fg" id="ringFg" d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31" />
+        </svg>
+        <span class="home__progress-num" id="progressNum">0/0</span>
+      </div>
+    </header>
+
+    <div class="home__hero">
+      <span class="home__eyebrow">Chasse aux trésors · Visite 360°</span>
+      <h1 class="home__title">Explorez Saint-Cyr<br />et trouvez ses secrets</h1>
+      <p class="home__lead">
+        Choisissez un lieu, plongez dans l'image 360°, et débusquez les
+        <span class="dot-inline"></span> points violets cachés dans le décor.
+        À chaque secret trouvé, une anecdote se dévoile.
+      </p>
+    </div>
+
+    <!-- carte touristique gamifiée -->
+    <div class="home__map">
+      <div class="mapwrap" id="mapWrap">
+        <img class="mapwrap__img" src="assets/carte-saint-cyr.png" alt="Carte touristique de Saint-Cyr-sur-Mer" />
+        <div class="mapwrap__vignette"></div>
+        <svg class="mapwrap__path" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <polyline class="mapwrap__path-shadow" id="mapPathShadow" points="" />
+          <polyline class="mapwrap__path-line" id="mapPathLine" points="" />
+        </svg>
+        <div class="mapwrap__pins" id="mapPins"><!-- pastilles injectées en JS --></div>
+        <div class="mapwrap__banner">
+          <span class="mapwrap__banner-k">La carte de la visite</span>
+          <span class="mapwrap__banner-s">Clique sur un lieu pour t'y rendre</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="home__sectitle">Tous les lieux</h2>
+    <div class="home__deck" id="sceneDeck"><!-- cartes injectées en JS --></div>
+
+    <footer class="home__foot">
+      <span>Astuce : faites glisser pour regarder autour de vous · molette pour zoomer</span>
+    </footer>
+  </section>
+
+  <!-- ============== VISIONNEUSE 360° ============== -->
+  <section id="tour" class="tour" hidden>
+    <div id="viewer" class="viewer"></div>
+
+    <!-- header -->
+    <header class="tour__top">
+      <button class="btn-ghost" id="backBtn" title="Retour à l'accueil">
+        <span class="i">‹</span> Carte
+      </button>
+      <div class="tour__brand">
+        <strong>SAINT-CYR-SUR-MER</strong><em>Méditerranée</em>
+      </div>
+      <div class="tour__tools">
+        <button class="chip-btn is-active" id="riddleBtn" title="Afficher / masquer les énigmes">
+          <span class="i">🧩</span> Énigmes
+        </button>
+        <button class="chip-btn" id="hintBtn" title="Faire scintiller les secrets non trouvés">
+          <span class="i">✦</span> Indice
+        </button>
+        <div class="found-pill" id="foundPill"><span class="dot"></span><span id="foundTxt">0/0</span></div>
+      </div>
+    </header>
+
+    <!-- panneau des énigmes (aide à trouver les points violets) -->
+    <aside class="riddles" id="riddlePanel">
+      <div class="riddles__head">
+        <span class="riddles__title"><span class="dot-inline"></span> Énigmes à résoudre</span>
+        <button class="riddles__close" id="riddleClose" title="Masquer">×</button>
+      </div>
+      <p class="riddles__hint">Trouve les points violets cachés dans l'image grâce à ces indices.</p>
+      <ul class="riddles__list" id="riddleList"></ul>
+      <div class="riddles__legend">
+        <span><i class="lg lg--secret"></i> secret</span>
+        <span><i class="lg lg--info"></i> info</span>
+        <span><i class="lg lg--portal"></i> autre lieu</span>
+      </div>
+    </aside>
+
+    <!-- panneau d'infos du lieu -->
+    <div class="tour__info" id="sceneInfo">
+      <div class="tour__tags" id="sceneTags"></div>
+      <h2 class="tour__name" id="sceneName">—</h2>
+      <p class="tour__desc" id="sceneDesc">—</p>
+      <div class="tour__hintline" id="hintLine"></div>
+    </div>
+
+    <!-- carrousel des autres lieux -->
+    <div class="tour__rail" id="sceneRail"></div>
+  </section>
+
+  <!-- ============== CARTE DE DÉCOUVERTE (popup secret) ============== -->
+  <div class="reveal" id="reveal" hidden>
+    <div class="reveal__card" id="revealCard">
+      <button class="reveal__close" id="revealClose">×</button>
+      <span class="reveal__badge" id="revealBadge">Secret trouvé !</span>
+      <h3 class="reveal__title" id="revealTitle"></h3>
+      <p class="reveal__text" id="revealText"></p>
+      <button class="reveal__cta" id="revealCta" hidden></button>
+    </div>
+  </div>
+
+  <!-- ============== TOAST DE FÉLICITATIONS ============== -->
+  <div class="toast" id="toast" hidden></div>
+
+  <!-- ============== SCRIPTS ============== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+        "@photo-sphere-viewer/core": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.7.3/index.module.js",
+        "@photo-sphere-viewer/markers-plugin": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.7.3/index.module.js"
+      }
+    }
+  </script>
+  <script src="js/data.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
