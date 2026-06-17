@@ -52,10 +52,20 @@ const TOUR = {
       ],
       quizzes: [
         { id: "qp1", yaw: 300, pitch: 6, title: "Quiz · Les Lecques",
-          question: "D'où viendrait le nom « Les Lecques » ?",
-          options: ["Du provençal « li lèco », les pierres plates", "D'un général romain", "D'une famille de pêcheurs"],
-          answer: 0,
-          explain: "« Li lèco » désigne en provençal les pierres plates du rivage." },
+          questions: [
+            { q: "D'où viendrait le nom « Les Lecques » ?",
+              options: ["Du provençal « li lèco », les pierres plates", "D'un général romain", "D'une famille de pêcheurs"],
+              answer: 0,
+              explain: "« Li lèco » désigne en provençal les pierres plates du rivage." },
+            { q: "Quelle est la longueur de la plage des Lecques ?",
+              options: ["Environ 500 m", "Près de 2 km", "Plus de 5 km"],
+              answer: 1,
+              explain: "La plage déroule près de 2 km de sable fin au fond de la baie." },
+            { q: "Que peut-on visiter juste à côté de la plage ?",
+              options: ["Un musée sur une villa gallo-romaine", "Un parc d'attractions", "Une mine de sel"],
+              answer: 0,
+              explain: "Le musée de Tauroentum est installé sur une villa gallo-romaine du 1ᵉʳ siècle." },
+          ] },
       ],
       portals: [
         { id: "go-port", to: "port", yaw: 110, pitch: -4 },
@@ -93,10 +103,20 @@ const TOUR = {
       ],
       quizzes: [
         { id: "qpo1", yaw: 250, pitch: 4, title: "Quiz · La pêche",
-          question: "Qu'est-ce qu'une « madrague » ?",
-          options: ["Un type de bateau", "Un labyrinthe de filets à thons", "Un quartier du port"],
-          answer: 1,
-          explain: "La madrague est un piège fait de filets, autrefois tendu pour capturer les thons en migration." },
+          questions: [
+            { q: "Qu'est-ce qu'une « madrague » ?",
+              options: ["Un type de bateau", "Un labyrinthe de filets à thons", "Un quartier du port"],
+              answer: 1,
+              explain: "La madrague est un piège fait de filets, autrefois tendu pour capturer les thons en migration." },
+            { q: "Comment appelle-t-on les barques traditionnelles d'ici ?",
+              options: ["Des gondoles", "Des pointus", "Des chaloupes"],
+              answer: 1,
+              explain: "Les « pointus » sont effilés aux deux bouts, typiques de la Provence." },
+            { q: "Quel vent sec et puissant souffle sur la région ?",
+              options: ["Le sirocco", "Le mistral", "La tramontane"],
+              answer: 1,
+              explain: "Le mistral, vent du nord-ouest, dégage le ciel et rafraîchit les étés." },
+          ] },
       ],
       portals: [
         { id: "go-plage", to: "plage", yaw: 70, pitch: -3 },
@@ -168,10 +188,20 @@ const TOUR = {
       ],
       quizzes: [
         { id: "qv1", yaw: 250, pitch: 5, title: "Quiz · Patrimoine",
-          question: "Que trône-t-il au centre de la place Portalis ?",
-          options: ["Une fontaine romaine", "Une réplique dorée de la Statue de la Liberté", "Un phare miniature"],
-          answer: 1,
-          explain: "Saint-Cyr possède une réplique en cuivre doré de la Statue de la Liberté de Bartholdi." },
+          questions: [
+            { q: "Que trône-t-il au centre de la place Portalis ?",
+              options: ["Une fontaine romaine", "Une réplique dorée de la Statue de la Liberté", "Un phare miniature"],
+              answer: 1,
+              explain: "Saint-Cyr possède une réplique en cuivre doré de la Statue de la Liberté de Bartholdi." },
+            { q: "Pour quoi Jean-Étienne-Marie Portalis est-il célèbre ?",
+              options: ["La Déclaration des droits de l'homme", "Le Code civil", "La Constitution de 1958"],
+              answer: 1,
+              explain: "Portalis fut l'un des principaux rédacteurs du Code civil de Napoléon." },
+            { q: "Que trouve-t-on sur la place plusieurs matins par semaine ?",
+              options: ["Un marché provençal", "Une brocante d'antiquités", "Un marché aux fleurs uniquement"],
+              answer: 0,
+              explain: "Olives, fromages, savons et tissus colorés embaument le marché provençal." },
+          ] },
       ],
       portals: [
         { id: "go-plage", to: "plage", yaw: 80, pitch: -3 },
@@ -243,10 +273,16 @@ const TOUR = {
       ],
       quizzes: [
         { id: "qvi1", yaw: 300, pitch: 4, title: "Quiz · Terroir",
-          question: "Quel est le cépage roi de l'AOC Bandol ?",
-          options: ["Le merlot", "Le mourvèdre", "Le chardonnay"],
-          answer: 1,
-          explain: "Le mourvèdre, qui adore le soleil, donne des rouges puissants de longue garde." },
+          questions: [
+            { q: "Quel est le cépage roi de l'AOC Bandol ?",
+              options: ["Le merlot", "Le mourvèdre", "Le chardonnay"],
+              answer: 1,
+              explain: "Le mourvèdre, qui adore le soleil, donne des rouges puissants de longue garde." },
+            { q: "Comment appelle-t-on les murets des vignes en terrasses ?",
+              options: ["Des restanques", "Des bories", "Des calades"],
+              answer: 0,
+              explain: "Les restanques, murets de pierres sèches, retiennent la terre sur les pentes." },
+          ] },
       ],
       portals: [
         { id: "go-village", to: "village", yaw: 95, pitch: -3 },
@@ -275,6 +311,23 @@ const REWARDS = [
     desc: "Le badge ultime + un cadeau souvenir surprise." },
 ];
 
+// ============================================================
+//  CLASSEMENT — joueurs fictifs (le joueur « Toi » s'y insère
+//  selon son score). Plus le score est haut, plus de chances
+//  d'être tiré au sort lors du prochain tirage.
+// ============================================================
+const LEADERBOARD = [
+  { name: "Camille V.",   score: 1450 },
+  { name: "Marin_83",     score: 1280 },
+  { name: "Léa & Tom",    score: 1120 },
+  { name: "Provence_off", score: 970 },
+  { name: "Nina.D",       score: 760 },
+  { name: "Théo R.",      score: 540 },
+  { name: "Sofia",        score: 420 },
+  { name: "Lucas M.",     score: 240 },
+];
+
 // Exposé en global pour le module app.js
 window.TOUR = TOUR;
 window.REWARDS = REWARDS;
+window.LEADERBOARD = LEADERBOARD;

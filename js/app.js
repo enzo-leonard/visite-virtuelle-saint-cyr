@@ -67,7 +67,84 @@ function renderDeck() {
   });
   renderMap();
   renderRewards();
+  renderLeaderboard();
   updateProgressRing();
+}
+
+/* ---------- score du joueur ---------- */
+const PTS_SECRET = 100;
+const PTS_QUIZ = 50;
+function playerScore() {
+  return found.size * PTS_SECRET + quizSolved.size * PTS_QUIZ;
+}
+
+/* ---- classement : le joueur « Toi » s'insère selon son score ---- */
+function renderLeaderboard() {
+  const box = $("#leaderList");
+  if (!box) return;
+  const base = (window.LEADERBOARD || []).map((p) => ({ ...p }));
+  const me = { name: "Toi", score: playerScore(), me: true };
+  const all = [...base, me].sort((a, b) => b.score - a.score);
+  const total = all.reduce((n, p) => n + p.score, 0) || 1;
+  const maxScore = all[0].score || 1;
+
+  box.innerHTML = "";
+  all.forEach((p, i) => {
+    const rank = i + 1;
+    const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : rank;
+    const chance = Math.round((p.score / total) * 100);
+    const li = document.createElement("li");
+    li.className = "lb" + (p.me ? " is-me" : "");
+    li.innerHTML = `
+      <span class="lb__rank">${medal}</span>
+      <div class="lb__info">
+        <span class="lb__name">${p.name}</span>
+        <span class="lb__pts">${p.score} pts</span>
+      </div>
+      <div class="lb__chance">
+        <span class="lb__pct">${chance}%</span>
+        <span class="lb__bar"><i style="width:${Math.round((p.score / maxScore) * 100)}%"></i></span>
+      </div>`;
+    box.appendChild(li);
+  });
+
+  const youEl = $("#drawYou");
+  if (youEl) {
+    const myRank = all.findIndex((p) => p.me) + 1;
+    const myChance = Math.round((me.score / total) * 100);
+    youEl.textContent = `Toi : ${me.score} pts · ${myChance}% · #${myRank}`;
+  }
+}
+
+/* ---- compte à rebours du prochain tirage ---- */
+function nextDrawDate() {
+  const now = new Date();
+  // 1er du mois prochain à 18h00
+  return new Date(now.getFullYear(), now.getMonth() + 1, 1, 18, 0, 0);
+}
+function renderCountdown() {
+  const el = $("#drawCountdown");
+  if (!el) return;
+  const target = nextDrawDate();
+  const diff = Math.max(0, target.getTime() - Date.now());
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const blocks = [["J", d], ["H", h], ["M", m], ["S", s]];
+  el.innerHTML = blocks
+    .map(
+      ([lbl, v]) =>
+        `<div class="cd"><span class="cd__num">${String(v).padStart(2, "0")}</span><span class="cd__lbl">${lbl}</span></div>`
+    )
+    .join("");
+  const dateEl = $("#drawDate");
+  if (dateEl) {
+    dateEl.textContent = target.toLocaleDateString("fr-FR", {
+      day: "numeric",
+      month: "long",
+    }) + " · 18h";
+  }
 }
 
 /* ---- récompenses partenaires (débloquées selon les secrets) ---- */
@@ -451,57 +528,97 @@ revealEl.addEventListener("click", (e) => { if (e.target === revealEl) hideRevea
    QUIZ
 =========================================================== */
 const quizEl = $("#quiz");
-let currentQuiz = null;
+let quizState = null; // { quiz, idx, correct }
+
+// normalise : un quiz peut être mono-question (ancien format) ou multi
+function quizQuestions(q) {
+  if (Array.isArray(q.questions)) return q.questions;
+  return [{ q: q.question, options: q.options, answer: q.answer, explain: q.explain }];
+}
 
 function openQuiz(q) {
-  currentQuiz = q;
-  $("#quizTitle").textContent = q.title || "Quiz";
-  $("#quizQuestion").textContent = q.question || "";
-  const explain = $("#quizExplain");
-  explain.hidden = true;
-  explain.textContent = q.explain || "";
-
-  const opts = $("#quizOptions");
-  opts.innerHTML = "";
-  const answered = quizSolved.has(key(currentScene.id, q.id));
-  (q.options || []).forEach((label, i) => {
-    const b = document.createElement("button");
-    b.className = "quiz__opt";
-    b.textContent = label;
-    if (answered) {
-      b.disabled = true;
-      b.classList.add("is-disabled");
-      if (i === q.answer) b.classList.add("is-correct");
-    } else {
-      b.addEventListener("click", () => answerQuiz(q, i));
-    }
-    opts.appendChild(b);
-  });
-  if (answered) explain.hidden = false;
-
+  quizState = { quiz: q, idx: 0, correct: 0 };
+  renderQuizStep();
   quizEl.hidden = false;
 }
 
-function answerQuiz(q, choice) {
+function renderQuizStep() {
+  const { quiz, idx } = quizState;
+  const questions = quizQuestions(quiz);
+  const total = questions.length;
+  const cur = questions[idx];
+
+  $("#quizTitle").textContent = quiz.title || "Quiz";
+  $("#quizProgress").textContent = total > 1 ? `Question ${idx + 1}/${total}` : "";
+  $("#quizQuestion").textContent = cur.q || "";
+
+  const explain = $("#quizExplain");
+  explain.hidden = true;
+  explain.textContent = cur.explain || "";
+
+  const next = $("#quizNext");
+  next.hidden = true;
+
+  const opts = $("#quizOptions");
+  opts.innerHTML = "";
+  (cur.options || []).forEach((label, i) => {
+    const b = document.createElement("button");
+    b.className = "quiz__opt";
+    b.textContent = label;
+    b.addEventListener("click", () => answerQuizStep(i));
+    opts.appendChild(b);
+  });
+}
+
+function answerQuizStep(choice) {
+  const { quiz, idx } = quizState;
+  const questions = quizQuestions(quiz);
+  const cur = questions[idx];
+
   const opts = $("#quizOptions");
   [...opts.children].forEach((b, i) => {
     b.disabled = true;
     b.classList.add("is-disabled");
-    if (i === q.answer) b.classList.add("is-correct");
-    if (i === choice && choice !== q.answer) b.classList.add("is-wrong");
+    if (i === cur.answer) b.classList.add("is-correct");
+    if (i === choice && choice !== cur.answer) b.classList.add("is-wrong");
   });
   $("#quizExplain").hidden = false;
+  if (choice === cur.answer) quizState.correct++;
 
-  if (choice === q.answer) {
-    if (!quizSolved.has(key(currentScene.id, q.id))) {
-      quizSolved.add(key(currentScene.id, q.id));
-      saveQuizSolved();
-      markers.updateMarker({ id: q.id, className: "hidden-dot quiz done" });
-    }
-    toast("🧠 Bonne réponse !");
-  } else {
-    toast("Presque ! La bonne réponse est en vert.");
+  const isLast = idx >= questions.length - 1;
+  const next = $("#quizNext");
+  next.hidden = false;
+  next.textContent = isLast ? "Voir le résultat" : "Question suivante →";
+  next.onclick = isLast ? finishQuiz : nextQuizStep;
+}
+
+function nextQuizStep() {
+  quizState.idx++;
+  renderQuizStep();
+}
+
+function finishQuiz() {
+  const { quiz, correct } = quizState;
+  const total = quizQuestions(quiz).length;
+
+  if (!quizSolved.has(key(currentScene.id, quiz.id))) {
+    quizSolved.add(key(currentScene.id, quiz.id));
+    saveQuizSolved();
+    markers.updateMarker({ id: quiz.id, className: "hidden-dot quiz done" });
   }
+
+  $("#quizProgress").textContent = "Terminé";
+  $("#quizQuestion").textContent =
+    `Tu as obtenu ${correct}/${total} bonne${correct > 1 ? "s" : ""} réponse${correct > 1 ? "s" : ""} !`;
+  $("#quizOptions").innerHTML = "";
+  $("#quizExplain").hidden = true;
+
+  const next = $("#quizNext");
+  next.hidden = false;
+  next.textContent = "Fermer";
+  next.onclick = hideQuiz;
+
+  toast(correct === total ? "🧠 Sans faute ! Quiz réussi." : `Quiz terminé : ${correct}/${total}`);
 }
 
 function hideQuiz() { quizEl.hidden = true; }
@@ -567,6 +684,27 @@ $("#backBtn").addEventListener("click", () => {
 });
 
 /* ===========================================================
+   TOGGLE VUE CARTE / GRILLE
+=========================================================== */
+function setHomeView(view) {
+  const map = $("#viewMap");
+  const grid = $("#viewGrid");
+  if (!map || !grid) return;
+  const showGrid = view === "grid";
+  grid.hidden = !showGrid;
+  map.hidden = showGrid;
+  document.querySelectorAll("#viewToggle .home__toggle-btn").forEach((b) => {
+    b.classList.toggle("is-active", b.dataset.view === view);
+  });
+}
+document.querySelectorAll("#viewToggle .home__toggle-btn").forEach((b) => {
+  b.addEventListener("click", () => setHomeView(b.dataset.view));
+});
+
+/* ===========================================================
    INIT
 =========================================================== */
 renderDeck();
+renderCountdown();
+setInterval(renderCountdown, 1000);
+setHomeView("map");

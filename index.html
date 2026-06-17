@@ -1,201 +1,330 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Saint-Cyr-sur-Mer · Visite virtuelle 360°</title>
-  <meta name="description" content="Explorez Saint-Cyr-sur-Mer en 360° et partez à la chasse aux secrets cachés." />
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Saint-Cyr-sur-Mer · Visite virtuelle 360°</title>
+    <meta
+      name="description"
+      content="Explorez Saint-Cyr-sur-Mer en 360° et partez à la chasse aux secrets cachés."
+    />
 
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.7.3/index.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.7.3/index.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
+    <link rel="icon" type="image/png" href="assets/logo_saint-cyr.png" />
+    <link rel="apple-touch-icon" href="assets/logo_saint-cyr.png" />
+    <meta name="theme-color" content="#05202b" />
 
-  <!-- ============== ÉCRAN D'ACCUEIL ============== -->
-  <section id="home" class="home">
-    <div class="home__bg"></div>
-    <div class="home__overlay"></div>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.7.3/index.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.7.3/index.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- ============== ÉCRAN D'ACCUEIL ============== -->
+    <section id="home" class="home">
+      <div class="home__bg"></div>
+      <div class="home__overlay"></div>
 
-    <div class="home__inner">
-    <header class="home__topbar">
-      <div class="brand">
-        <img class="brand__logo" src="assets/logo_saint-cyr.png" alt="Saint-Cyr-sur-Mer · La Provence, les pieds dans l'eau" />
-      </div>
-      <div class="home__progress" id="homeProgress" aria-label="Progression">
-        <svg viewBox="0 0 36 36" class="ring">
-          <path class="ring__bg" d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31" />
-          <path class="ring__fg" id="ringFg" d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31" />
-        </svg>
-        <span class="home__progress-num" id="progressNum">0/0</span>
-      </div>
-    </header>
+      <div class="home__inner">
+        <header class="home__topbar">
+          <div class="brand">
+            <img
+              class="brand__logo"
+              src="assets/logo_saint-cyr.png"
+              alt="Saint-Cyr-sur-Mer · La Provence, les pieds dans l'eau"
+            />
+          </div>
+          <div
+            class="home__progress"
+            id="homeProgress"
+            aria-label="Progression"
+          >
+            <svg viewBox="0 0 36 36" class="ring">
+              <path
+                class="ring__bg"
+                d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31"
+              />
+              <path
+                class="ring__fg"
+                id="ringFg"
+                d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31"
+              />
+            </svg>
+            <span class="home__progress-num" id="progressNum">0/0</span>
+          </div>
+        </header>
 
-    <div class="home__hero">
-      <span class="home__eyebrow">Chasse aux trésors · Visite 360°</span>
-      <h1 class="home__title">Explorez Saint-Cyr<br />et trouvez ses secrets</h1>
-      <p class="home__lead">
-        Choisissez un lieu, plongez dans l'image 360°, et débusquez les
-        <span class="dot-inline"></span> points violets cachés dans le décor.
-        À chaque secret trouvé, une anecdote se dévoile.
-      </p>
-    </div>
-
-    <!-- SECTION 1 : carte touristique gamifiée -->
-    <section class="home__block">
-      <div class="home__sec">
-        <span class="home__sec-num">1</span>
-        <div class="home__sec-txt">
-          <h2 class="home__sec-title">La carte de Saint-Cyr</h2>
-          <p class="home__sec-sub">Balade-toi sur la carte et clique sur un lieu pour t'y rendre.</p>
+        <div class="home__hero">
+          <span class="home__eyebrow">Chasse aux trésors · Visite 360°</span>
+          <h1 class="home__title">
+            Explorez Saint-Cyr<br />et trouvez ses secrets
+          </h1>
+          <p class="home__lead">
+            Choisissez un lieu, plongez dans l'image 360°, et débusquez les
+            <span class="dot-inline"></span> points violets cachés dans le
+            décor. À chaque secret trouvé, une anecdote se dévoile.
+          </p>
         </div>
-      </div>
-      <div class="home__map">
-        <div class="mapwrap" id="mapWrap">
-          <img class="mapwrap__img" src="assets/carte-saint-cyr.png" alt="Carte touristique de Saint-Cyr-sur-Mer" />
-          <div class="mapwrap__vignette"></div>
-          <svg class="mapwrap__path" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polyline class="mapwrap__path-shadow" id="mapPathShadow" points="" />
-            <polyline class="mapwrap__path-line" id="mapPathLine" points="" />
-          </svg>
-          <div class="mapwrap__pins" id="mapPins"><!-- pastilles injectées en JS --></div>
-        </div>
+
+        <!-- SECTION 1 : explorer les lieux (toggle carte / grille) -->
+        <section class="home__block">
+          <div class="home__sec">
+            <span class="home__sec-num">1</span>
+            <div class="home__sec-txt">
+              <h2 class="home__sec-title">Explore les lieux</h2>
+              <p class="home__sec-sub">
+                Carte interactive ou grille des points d'intérêt : à toi de
+                choisir.
+              </p>
+            </div>
+            <div class="home__toggle" id="viewToggle" role="tablist">
+              <button
+                class="home__toggle-btn is-active"
+                data-view="map"
+                type="button"
+              >
+                🗺️ Carte
+              </button>
+              <button class="home__toggle-btn" data-view="grid" type="button">
+                ▦ Grille
+              </button>
+            </div>
+          </div>
+
+          <!-- vue CARTE -->
+          <div class="home__view" id="viewMap">
+            <div class="home__map">
+              <div class="mapwrap" id="mapWrap">
+                <img
+                  class="mapwrap__img"
+                  src="assets/carte-saint-cyr.png"
+                  alt="Carte touristique de Saint-Cyr-sur-Mer"
+                />
+                <div class="mapwrap__vignette"></div>
+                <svg
+                  class="mapwrap__path"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                >
+                  <polyline
+                    class="mapwrap__path-shadow"
+                    id="mapPathShadow"
+                    points=""
+                  />
+                  <polyline
+                    class="mapwrap__path-line"
+                    id="mapPathLine"
+                    points=""
+                  />
+                </svg>
+                <div class="mapwrap__pins" id="mapPins">
+                  <!-- pastilles injectées en JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- vue GRILLE -->
+          <div class="home__view" id="viewGrid" hidden>
+            <div class="home__deck" id="sceneDeck">
+              <!-- cartes injectées en JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2 : récompenses -->
+        <section class="home__block">
+          <div class="home__sec">
+            <span class="home__sec-num">2</span>
+            <div class="home__sec-txt">
+              <h2 class="home__sec-title">Récompenses à débloquer</h2>
+              <p class="home__sec-sub">
+                Trouve des secrets pour gagner des avantages chez nos
+                partenaires.
+              </p>
+            </div>
+          </div>
+          <div class="home__rewards" id="rewardDeck">
+            <!-- injecté en JS -->
+          </div>
+        </section>
+
+        <!-- SECTION 3 : tirage au sort + classement -->
+        <section class="home__block">
+          <div class="home__sec">
+            <span class="home__sec-num">3</span>
+            <div class="home__sec-txt">
+              <h2 class="home__sec-title">Prochain tirage au sort</h2>
+              <p class="home__sec-sub">
+                Ton score augmente tes chances d'être tiré pour gagner les lots.
+              </p>
+            </div>
+          </div>
+          <div class="draw">
+            <div class="draw__next">
+              <div class="draw__k">🎰 Prochain tirage</div>
+              <div class="draw__date" id="drawDate">—</div>
+              <div class="draw__count" id="drawCountdown"></div>
+              <p class="draw__note">
+                Chaque secret rapporte 100 pts, chaque quiz réussi 50 pts. Plus
+                ton score grimpe, plus tu as de chances d'être tiré au sort.
+              </p>
+            </div>
+            <div class="draw__board">
+              <div class="draw__board-head">
+                <span class="draw__k">🏅 Classement</span>
+                <span class="draw__you" id="drawYou"></span>
+              </div>
+              <ol class="lb-list" id="leaderList">
+                <!-- injecté en JS -->
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <footer class="home__foot">
+          <!-- <span>Astuce : faites glisser pour regarder autour de vous · molette pour zoomer</span> -->
+        </footer>
       </div>
     </section>
 
-    <!-- SECTION 2 : liste des lieux -->
-    <section class="home__block">
-      <div class="home__sec">
-        <span class="home__sec-num">2</span>
-        <div class="home__sec-txt">
-          <h2 class="home__sec-title">Tous les lieux</h2>
-          <p class="home__sec-sub">La liste complète des points d'intérêt à explorer.</p>
+    <!-- ============== VISIONNEUSE 360° ============== -->
+    <section id="tour" class="tour" hidden>
+      <div id="viewer" class="viewer"></div>
+
+      <!-- overlay de chargement panorama -->
+      <div class="ploader" id="ploader" hidden>
+        <div class="ploader__bg" id="ploaderBg"></div>
+        <div class="ploader__veil"></div>
+        <div class="ploader__inner">
+          <span class="ploader__eyebrow">Embarquement · Visite 360°</span>
+          <h2 class="ploader__title" id="ploaderSub">Saint-Cyr-sur-Mer</h2>
+          <div class="ploader__bar"><span></span></div>
         </div>
       </div>
-      <div class="home__deck" id="sceneDeck"><!-- cartes injectées en JS --></div>
-    </section>
 
-    <!-- SECTION 3 : récompenses -->
-    <section class="home__block">
-      <div class="home__sec">
-        <span class="home__sec-num">3</span>
-        <div class="home__sec-txt">
-          <h2 class="home__sec-title">Récompenses à débloquer</h2>
-          <p class="home__sec-sub">Trouve des secrets pour gagner des avantages chez nos partenaires.</p>
-        </div>
-      </div>
-      <div class="home__rewards" id="rewardDeck"><!-- injecté en JS --></div>
-    </section>
-
-    <footer class="home__foot">
-      <span>Astuce : faites glisser pour regarder autour de vous · molette pour zoomer</span>
-    </footer>
-    </div>
-  </section>
-
-  <!-- ============== VISIONNEUSE 360° ============== -->
-  <section id="tour" class="tour" hidden>
-    <div id="viewer" class="viewer"></div>
-
-    <!-- overlay de chargement panorama -->
-    <div class="ploader" id="ploader" hidden>
-      <div class="ploader__bg" id="ploaderBg"></div>
-      <div class="ploader__veil"></div>
-      <div class="ploader__inner">
-        <span class="ploader__eyebrow">Embarquement · Visite 360°</span>
-        <h2 class="ploader__title" id="ploaderSub">Saint-Cyr-sur-Mer</h2>
-        <div class="ploader__bar"><span></span></div>
-      </div>
-    </div>
-
-    <!-- header -->
-    <header class="tour__top">
-      <button class="btn-ghost" id="backBtn" title="Retour à l'accueil">
-        <span class="i">‹</span> Carte
-      </button>
-      <div class="tour__brand">
-        <img class="tour__logo" src="assets/logo_saint-cyr.png" alt="Saint-Cyr-sur-Mer" />
-      </div>
-      <div class="tour__tools">
-        <button class="chip-btn is-active" id="riddleBtn" title="Afficher / masquer les énigmes">
-          <span class="i">🧩</span> Énigmes
+      <!-- header -->
+      <header class="tour__top">
+        <button class="btn-ghost" id="backBtn" title="Retour à l'accueil">
+          <span class="i">‹</span> Carte
         </button>
-        <button class="chip-btn" id="hintBtn" title="Faire scintiller les secrets non trouvés">
-          <span class="i">✦</span> Indice
-        </button>
-        <div class="found-pill" id="foundPill"><span class="dot"></span><span id="foundTxt">0/0</span></div>
-      </div>
-    </header>
+        <div class="tour__brand">
+          <img
+            class="tour__logo"
+            src="assets/logo_saint-cyr.png"
+            alt="Saint-Cyr-sur-Mer"
+          />
+        </div>
+        <div class="tour__tools">
+          <button
+            class="chip-btn is-active"
+            id="riddleBtn"
+            title="Afficher / masquer les énigmes"
+          >
+            <span class="i">🧩</span> Énigmes
+          </button>
+          <button
+            class="chip-btn"
+            id="hintBtn"
+            title="Faire scintiller les secrets non trouvés"
+          >
+            <span class="i">✦</span> Indice
+          </button>
+          <div class="found-pill" id="foundPill">
+            <span class="dot"></span><span id="foundTxt">0/0</span>
+          </div>
+        </div>
+      </header>
 
-    <!-- panneau des énigmes (aide à trouver les points violets) -->
-    <aside class="riddles" id="riddlePanel">
-      <div class="riddles__head">
-        <span class="riddles__title"><span class="dot-inline"></span> Énigmes à résoudre</span>
-        <button class="riddles__close" id="riddleClose" title="Masquer">×</button>
-      </div>
-      <p class="riddles__hint">Trouve les points violets cachés dans l'image grâce à ces indices.</p>
-      <ul class="riddles__list" id="riddleList"></ul>
-      <div class="riddles__legend">
-        <span><i class="lg lg--secret"></i> secret</span>
-        <span><i class="lg lg--info"></i> info</span>
-        <span><i class="lg lg--quiz"></i> quiz</span>
-        <span><i class="lg lg--portal"></i> autre lieu</span>
-      </div>
-    </aside>
+      <!-- panneau des énigmes (aide à trouver les points violets) -->
+      <aside class="riddles" id="riddlePanel">
+        <div class="riddles__head">
+          <span class="riddles__title"
+            ><span class="dot-inline"></span> Énigmes à résoudre</span
+          >
+          <button class="riddles__close" id="riddleClose" title="Masquer">
+            ×
+          </button>
+        </div>
+        <p class="riddles__hint">
+          Trouve les points violets cachés dans l'image grâce à ces indices.
+        </p>
+        <ul class="riddles__list" id="riddleList"></ul>
+        <div class="riddles__legend">
+          <span><i class="lg lg--secret"></i> secret</span>
+          <span><i class="lg lg--info"></i> info</span>
+          <span><i class="lg lg--quiz"></i> quiz</span>
+          <span><i class="lg lg--portal"></i> autre lieu</span>
+        </div>
+      </aside>
 
-    <!-- panneau d'infos du lieu -->
-    <div class="tour__info" id="sceneInfo">
-      <div class="tour__tags" id="sceneTags"></div>
-      <h2 class="tour__name" id="sceneName">—</h2>
-      <p class="tour__desc" id="sceneDesc">—</p>
-      <div class="tour__hintline" id="hintLine"></div>
+      <!-- panneau d'infos du lieu -->
+      <div class="tour__info" id="sceneInfo">
+        <div class="tour__tags" id="sceneTags"></div>
+        <h2 class="tour__name" id="sceneName">—</h2>
+        <p class="tour__desc" id="sceneDesc">—</p>
+        <div class="tour__hintline" id="hintLine"></div>
+      </div>
+
+      <!-- carrousel des autres lieux -->
+      <div class="tour__rail" id="sceneRail"></div>
+    </section>
+
+    <!-- ============== CARTE DE DÉCOUVERTE (popup secret) ============== -->
+    <div class="reveal" id="reveal" hidden>
+      <div class="reveal__card" id="revealCard">
+        <button class="reveal__close" id="revealClose">×</button>
+        <span class="reveal__badge" id="revealBadge">Secret trouvé !</span>
+        <h3 class="reveal__title" id="revealTitle"></h3>
+        <p class="reveal__text" id="revealText"></p>
+        <button class="reveal__cta" id="revealCta" hidden></button>
+      </div>
     </div>
 
-    <!-- carrousel des autres lieux -->
-    <div class="tour__rail" id="sceneRail"></div>
-  </section>
-
-  <!-- ============== CARTE DE DÉCOUVERTE (popup secret) ============== -->
-  <div class="reveal" id="reveal" hidden>
-    <div class="reveal__card" id="revealCard">
-      <button class="reveal__close" id="revealClose">×</button>
-      <span class="reveal__badge" id="revealBadge">Secret trouvé !</span>
-      <h3 class="reveal__title" id="revealTitle"></h3>
-      <p class="reveal__text" id="revealText"></p>
-      <button class="reveal__cta" id="revealCta" hidden></button>
+    <!-- ============== QUIZ ============== -->
+    <div class="quizbox" id="quiz" hidden>
+      <div class="quiz__card" id="quizCard">
+        <button class="quiz__close" id="quizClose">×</button>
+        <div class="quiz__head">
+          <span class="quiz__badge">🧠 Quiz</span>
+          <span class="quiz__progress" id="quizProgress"></span>
+        </div>
+        <h3 class="quiz__title" id="quizTitle"></h3>
+        <p class="quiz__q" id="quizQuestion"></p>
+        <div class="quiz__options" id="quizOptions"></div>
+        <p class="quiz__explain" id="quizExplain" hidden></p>
+        <button class="quiz__next" id="quizNext" hidden></button>
+      </div>
     </div>
-  </div>
 
-  <!-- ============== QUIZ ============== -->
-  <div class="quizbox" id="quiz" hidden>
-    <div class="quiz__card" id="quizCard">
-      <button class="quiz__close" id="quizClose">×</button>
-      <span class="quiz__badge">🧠 Quiz</span>
-      <h3 class="quiz__title" id="quizTitle"></h3>
-      <p class="quiz__q" id="quizQuestion"></p>
-      <div class="quiz__options" id="quizOptions"></div>
-      <p class="quiz__explain" id="quizExplain" hidden></p>
-    </div>
-  </div>
+    <!-- ============== TOAST DE FÉLICITATIONS ============== -->
+    <div class="toast" id="toast" hidden></div>
 
-  <!-- ============== TOAST DE FÉLICITATIONS ============== -->
-  <div class="toast" id="toast" hidden></div>
-
-  <!-- ============== SCRIPTS ============== -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
-        "@photo-sphere-viewer/core": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.7.3/index.module.js",
-        "@photo-sphere-viewer/markers-plugin": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.7.3/index.module.js"
+    <!-- ============== SCRIPTS ============== -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+          "@photo-sphere-viewer/core": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.7.3/index.module.js",
+          "@photo-sphere-viewer/markers-plugin": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.7.3/index.module.js"
+        }
       }
-    }
-  </script>
-  <script src="js/data.js"></script>
-  <script type="module" src="js/app.js"></script>
-</body>
+    </script>
+    <script src="js/data.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
 </html>
