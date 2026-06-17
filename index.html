@@ -48,25 +48,39 @@
       </p>
     </div>
 
-    <!-- carte touristique gamifiée -->
-    <div class="home__map">
-      <div class="mapwrap" id="mapWrap">
-        <img class="mapwrap__img" src="assets/carte-saint-cyr.png" alt="Carte touristique de Saint-Cyr-sur-Mer" />
-        <div class="mapwrap__vignette"></div>
-        <svg class="mapwrap__path" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <polyline class="mapwrap__path-shadow" id="mapPathShadow" points="" />
-          <polyline class="mapwrap__path-line" id="mapPathLine" points="" />
-        </svg>
-        <div class="mapwrap__pins" id="mapPins"><!-- pastilles injectées en JS --></div>
-        <div class="mapwrap__banner">
-          <span class="mapwrap__banner-k">La carte de la visite</span>
-          <span class="mapwrap__banner-s">Clique sur un lieu pour t'y rendre</span>
+    <!-- SECTION 1 : carte touristique gamifiée -->
+    <section class="home__block">
+      <div class="home__sec">
+        <span class="home__sec-num">1</span>
+        <div class="home__sec-txt">
+          <h2 class="home__sec-title">La carte de Saint-Cyr</h2>
+          <p class="home__sec-sub">Balade-toi sur la carte et clique sur un lieu pour t'y rendre.</p>
         </div>
       </div>
-    </div>
+      <div class="home__map">
+        <div class="mapwrap" id="mapWrap">
+          <img class="mapwrap__img" src="assets/carte-saint-cyr.png" alt="Carte touristique de Saint-Cyr-sur-Mer" />
+          <div class="mapwrap__vignette"></div>
+          <svg class="mapwrap__path" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polyline class="mapwrap__path-shadow" id="mapPathShadow" points="" />
+            <polyline class="mapwrap__path-line" id="mapPathLine" points="" />
+          </svg>
+          <div class="mapwrap__pins" id="mapPins"><!-- pastilles injectées en JS --></div>
+        </div>
+      </div>
+    </section>
 
-    <h2 class="home__sectitle">Tous les lieux</h2>
-    <div class="home__deck" id="sceneDeck"><!-- cartes injectées en JS --></div>
+    <!-- SECTION 2 : liste des lieux -->
+    <section class="home__block">
+      <div class="home__sec">
+        <span class="home__sec-num">2</span>
+        <div class="home__sec-txt">
+          <h2 class="home__sec-title">Tous les lieux</h2>
+          <p class="home__sec-sub">La liste complète des points d'intérêt à explorer.</p>
+        </div>
+      </div>
+      <div class="home__deck" id="sceneDeck"><!-- cartes injectées en JS --></div>
+    </section>
 
     <footer class="home__foot">
       <span>Astuce : faites glisser pour regarder autour de vous · molette pour zoomer</span>
@@ -76,6 +90,17 @@
   <!-- ============== VISIONNEUSE 360° ============== -->
   <section id="tour" class="tour" hidden>
     <div id="viewer" class="viewer"></div>
+
+    <!-- overlay de chargement panorama -->
+    <div class="ploader" id="ploader" hidden>
+      <div class="ploader__art">
+        <span class="ploader__halo"></span>
+        <span class="ploader__spinner"></span>
+        <span class="ploader__globe">🧭</span>
+      </div>
+      <div class="ploader__txt">Chargement du panorama<span class="ploader__dots"><i>.</i><i>.</i><i>.</i></span></div>
+      <div class="ploader__sub" id="ploaderSub"></div>
+    </div>
 
     <!-- header -->
     <header class="tour__top">

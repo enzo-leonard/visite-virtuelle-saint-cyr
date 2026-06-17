@@ -167,18 +167,43 @@ function buildMarkers(scene) {
   return list;
 }
 
+function showLoader(name) {
+  const el = $("#ploader");
+  if (!el) return;
+  const sub = $("#ploaderSub");
+  if (sub) sub.textContent = name || "";
+  el.hidden = false;
+  requestAnimationFrame(() => el.classList.add("show"));
+}
+
+function hideLoader() {
+  const el = $("#ploader");
+  if (!el) return;
+  el.classList.remove("show");
+  setTimeout(() => {
+    el.hidden = true;
+  }, 460);
+}
+
 async function loadScene(sceneId, withTransition = true) {
   const scene = sceneById(sceneId);
   if (!scene) return;
   currentScene = scene;
 
+  showLoader(scene.name);
+
   if (!viewer) {
     ensureViewer(scene.panorama);
+    viewer.addEventListener("ready", () => hideLoader(), { once: true });
   } else {
-    await viewer.setPanorama(scene.panorama, {
-      transition: withTransition,
-      showLoader: true,
-    });
+    try {
+      await viewer.setPanorama(scene.panorama, {
+        transition: withTransition,
+        showLoader: false,
+      });
+    } finally {
+      hideLoader();
+    }
   }
   markers.setMarkers(buildMarkers(scene));
 
