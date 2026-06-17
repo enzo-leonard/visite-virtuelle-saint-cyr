@@ -167,11 +167,13 @@ function buildMarkers(scene) {
   return list;
 }
 
-function showLoader(name) {
+function showLoader(scene) {
   const el = $("#ploader");
   if (!el) return;
   const sub = $("#ploaderSub");
-  if (sub) sub.textContent = name || "";
+  if (sub) sub.textContent = scene?.name || "";
+  const bg = $("#ploaderBg");
+  if (bg) bg.style.backgroundImage = scene?.thumb ? `url("${scene.thumb}")` : "";
   el.hidden = false;
   requestAnimationFrame(() => el.classList.add("show"));
 }
@@ -190,7 +192,7 @@ async function loadScene(sceneId, withTransition = true) {
   if (!scene) return;
   currentScene = scene;
 
-  showLoader(scene.name);
+  showLoader(scene);
 
   if (!viewer) {
     ensureViewer(scene.panorama);
