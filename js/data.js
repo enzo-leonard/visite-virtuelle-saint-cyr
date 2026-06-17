@@ -50,6 +50,13 @@ const TOUR = {
         { id: "ip2", yaw: 200, pitch: 22, title: "Un microclimat",
           text: "Plus de 300 jours de soleil par an : Saint-Cyr profite d'un climat méditerranéen très doux." },
       ],
+      quizzes: [
+        { id: "qp1", yaw: 300, pitch: 6, title: "Quiz · Les Lecques",
+          question: "D'où viendrait le nom « Les Lecques » ?",
+          options: ["Du provençal « li lèco », les pierres plates", "D'un général romain", "D'une famille de pêcheurs"],
+          answer: 0,
+          explain: "« Li lèco » désigne en provençal les pierres plates du rivage." },
+      ],
       portals: [
         { id: "go-port", to: "port", yaw: 110, pitch: -4 },
         { id: "go-village", to: "village", yaw: 300, pitch: -3 },
@@ -83,6 +90,13 @@ const TOUR = {
           text: "Autour du port, les terrasses servent poissons grillés et spécialités provençales." },
         { id: "io2", yaw: 320, pitch: 26, title: "Le mistral",
           text: "Ce vent du nord-ouest, sec et puissant, dégage le ciel et rafraîchit les étés." },
+      ],
+      quizzes: [
+        { id: "qpo1", yaw: 250, pitch: 4, title: "Quiz · La pêche",
+          question: "Qu'est-ce qu'une « madrague » ?",
+          options: ["Un type de bateau", "Un labyrinthe de filets à thons", "Un quartier du port"],
+          answer: 1,
+          explain: "La madrague est un piège fait de filets, autrefois tendu pour capturer les thons en migration." },
       ],
       portals: [
         { id: "go-plage", to: "plage", yaw: 70, pitch: -3 },
@@ -152,6 +166,13 @@ const TOUR = {
         { id: "iv2", yaw: 300, pitch: 14, title: "Les platanes",
           text: "Les platanes ombragent la place où l'on tape volontiers le carton et joue à la pétanque." },
       ],
+      quizzes: [
+        { id: "qv1", yaw: 250, pitch: 5, title: "Quiz · Patrimoine",
+          question: "Que trône-t-il au centre de la place Portalis ?",
+          options: ["Une fontaine romaine", "Une réplique dorée de la Statue de la Liberté", "Un phare miniature"],
+          answer: 1,
+          explain: "Saint-Cyr possède une réplique en cuivre doré de la Statue de la Liberté de Bartholdi." },
+      ],
       portals: [
         { id: "go-plage", to: "plage", yaw: 80, pitch: -3 },
         { id: "go-vignoble", to: "vignoble", yaw: 290, pitch: -2 },
@@ -219,6 +240,13 @@ const TOUR = {
           text: "Plusieurs domaines familiaux ouvrent leurs portes pour des dégustations." },
         { id: "ivi2", yaw: 260, pitch: 6, title: "Oliviers & amandiers",
           text: "Entre les vignes, oliviers et amandiers complètent ce paysage agricole méditerranéen." },
+      ],
+      quizzes: [
+        { id: "qvi1", yaw: 300, pitch: 4, title: "Quiz · Terroir",
+          question: "Quel est le cépage roi de l'AOC Bandol ?",
+          options: ["Le merlot", "Le mourvèdre", "Le chardonnay"],
+          answer: 1,
+          explain: "Le mourvèdre, qui adore le soleil, donne des rouges puissants de longue garde." },
       ],
       portals: [
         { id: "go-village", to: "village", yaw: 95, pitch: -3 },

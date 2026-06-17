@@ -21,6 +21,7 @@
     <div class="home__bg"></div>
     <div class="home__overlay"></div>
 
+    <div class="home__inner">
     <header class="home__topbar">
       <div class="brand">
         <span class="brand__mark">⚓</span>
@@ -85,6 +86,7 @@
     <footer class="home__foot">
       <span>Astuce : faites glisser pour regarder autour de vous · molette pour zoomer</span>
     </footer>
+    </div>
   </section>
 
   <!-- ============== VISIONNEUSE 360° ============== -->
@@ -132,6 +134,7 @@
       <div class="riddles__legend">
         <span><i class="lg lg--secret"></i> secret</span>
         <span><i class="lg lg--info"></i> info</span>
+        <span><i class="lg lg--quiz"></i> quiz</span>
         <span><i class="lg lg--portal"></i> autre lieu</span>
       </div>
     </aside>
@@ -156,6 +159,18 @@
       <h3 class="reveal__title" id="revealTitle"></h3>
       <p class="reveal__text" id="revealText"></p>
       <button class="reveal__cta" id="revealCta" hidden></button>
+    </div>
+  </div>
+
+  <!-- ============== QUIZ ============== -->
+  <div class="quiz" id="quiz" hidden>
+    <div class="quiz__card" id="quizCard">
+      <button class="quiz__close" id="quizClose">×</button>
+      <span class="quiz__badge">🧠 Quiz</span>
+      <h3 class="quiz__title" id="quizTitle"></h3>
+      <p class="quiz__q" id="quizQuestion"></p>
+      <div class="quiz__options" id="quizOptions"></div>
+      <p class="quiz__explain" id="quizExplain" hidden></p>
     </div>
   </div>
 

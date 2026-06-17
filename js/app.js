@@ -6,10 +6,12 @@ import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 
 const TOUR = window.TOUR;
 const STORE_KEY = "stcyr-secrets-found";
+const QUIZ_KEY = "stcyr-quiz-solved";
 
 /* ---------- état ---------- */
 const totalSecrets = TOUR.scenes.reduce((n, s) => n + s.secrets.length, 0);
 let found = loadFound();          // Set de "sceneId/secretId"
+let quizSolved = loadQuizSolved();// Set de "sceneId/quizId"
 let viewer = null;
 let markers = null;
 let currentScene = null;
@@ -20,6 +22,13 @@ function loadFound() {
 }
 function saveFound() {
   localStorage.setItem(STORE_KEY, JSON.stringify([...found]));
+}
+function loadQuizSolved() {
+  try { return new Set(JSON.parse(localStorage.getItem(QUIZ_KEY)) || []); }
+  catch { return new Set(); }
+}
+function saveQuizSolved() {
+  localStorage.setItem(QUIZ_KEY, JSON.stringify([...quizSolved]));
 }
 const key = (sceneId, secretId) => `${sceneId}/${secretId}`;
 const sceneFoundCount = (s) => s.secrets.filter((x) => found.has(key(s.id, x.id))).length;
@@ -147,6 +156,21 @@ function buildMarkers(scene) {
       anchor: "center center",
       className: "hidden-dot info",
       data: { ...info, kind: "info" },
+    });
+  });
+
+  // points QUIZ : questions ludiques (logo « ? »)
+  (scene.quizzes || []).forEach((q) => {
+    const done = quizSolved.has(key(scene.id, q.id));
+    list.push({
+      id: q.id,
+      position: { yaw: `${q.yaw}deg`, pitch: `${q.pitch}deg` },
+      html: '<div class="pt"></div>',
+      size: { width: 24, height: 24 },
+      anchor: "center center",
+      className: "hidden-dot quiz" + (done ? " done" : ""),
+      tooltip: { content: "🧠 Quiz", position: "top center" },
+      data: { ...q, kind: "quiz" },
     });
   });
 
@@ -306,6 +330,8 @@ function markerId(marker) {
 function findItem(scene, id) {
   const p = (scene.portals || []).find((x) => x.id === id);
   if (p) return { kind: "portal", ...p };
+  const q = (scene.quizzes || []).find((x) => x.id === id);
+  if (q) return { kind: "quiz", ...q };
   const i = (scene.infos || []).find((x) => x.id === id);
   if (i) return { kind: "info", ...i };
   const s = scene.secrets.find((x) => x.id === id);
@@ -325,6 +351,12 @@ function onMarkerClick(marker) {
       toast(`➜ ${dest.name}`);
       loadScene(dest.id, true);
     }
+    return;
+  }
+
+  // QUIZ : question ludique
+  if (item.kind === "quiz") {
+    openQuiz(item);
     return;
   }
 
@@ -384,7 +416,71 @@ function hideReveal() { revealEl.hidden = true; }
 
 $("#revealClose").addEventListener("click", hideReveal);
 revealEl.addEventListener("click", (e) => { if (e.target === revealEl) hideReveal(); });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideReveal(); });
+
+/* ===========================================================
+   QUIZ
+=========================================================== */
+const quizEl = $("#quiz");
+let currentQuiz = null;
+
+function openQuiz(q) {
+  currentQuiz = q;
+  $("#quizTitle").textContent = q.title || "Quiz";
+  $("#quizQuestion").textContent = q.question || "";
+  const explain = $("#quizExplain");
+  explain.hidden = true;
+  explain.textContent = q.explain || "";
+
+  const opts = $("#quizOptions");
+  opts.innerHTML = "";
+  const answered = quizSolved.has(key(currentScene.id, q.id));
+  (q.options || []).forEach((label, i) => {
+    const b = document.createElement("button");
+    b.className = "quiz__opt";
+    b.textContent = label;
+    if (answered) {
+      b.disabled = true;
+      b.classList.add("is-disabled");
+      if (i === q.answer) b.classList.add("is-correct");
+    } else {
+      b.addEventListener("click", () => answerQuiz(q, i));
+    }
+    opts.appendChild(b);
+  });
+  if (answered) explain.hidden = false;
+
+  quizEl.hidden = false;
+}
+
+function answerQuiz(q, choice) {
+  const opts = $("#quizOptions");
+  [...opts.children].forEach((b, i) => {
+    b.disabled = true;
+    b.classList.add("is-disabled");
+    if (i === q.answer) b.classList.add("is-correct");
+    if (i === choice && choice !== q.answer) b.classList.add("is-wrong");
+  });
+  $("#quizExplain").hidden = false;
+
+  if (choice === q.answer) {
+    if (!quizSolved.has(key(currentScene.id, q.id))) {
+      quizSolved.add(key(currentScene.id, q.id));
+      saveQuizSolved();
+      markers.updateMarker({ id: q.id, className: "hidden-dot quiz done" });
+    }
+    toast("🧠 Bonne réponse !");
+  } else {
+    toast("Presque ! La bonne réponse est en vert.");
+  }
+}
+
+function hideQuiz() { quizEl.hidden = true; }
+$("#quizClose").addEventListener("click", hideQuiz);
+quizEl.addEventListener("click", (e) => { if (e.target === quizEl) hideQuiz(); });
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { hideReveal(); hideQuiz(); }
+});
 
 /* ===========================================================
    TOAST
